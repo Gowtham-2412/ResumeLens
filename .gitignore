@@ -1,0 +1,32 @@
+# Dependencies
+/node_modules
+/server/node_modules
+/client/node_modules
+
+# Environment Variables
+# Never commit sensitive environment variables.
+.env
+.env.*.local
+.env.local
+
+/server/.env
+
+# Production/Build artifacts
+/build
+/dist
+.next/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.idea
+.vscode
