@@ -1,16 +1,30 @@
-# React + Vite
+# 🎨 ResumeLens - Client Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This directory contains the frontend user interface for ResumeLens. It provides a clean, intuitive experience for users to upload their resumes, paste job descriptions, and view their AI-generated ATS scores and insights.
 
-Currently, two official plugins are available:
+## 🛠️ Setup & Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+To get the frontend running locally:
 
-## React Compiler
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Environment Configuration:**
+   If your frontend needs to know where the backend API lives, create a `.env` file in this `client` folder. For example:
+   ```env
+   VITE_API_URL=http://localhost:5000
+   # OR for Create React App:
+   # REACT_APP_API_URL=http://localhost:5000
+   ```
 
-## Expanding the ESLint configuration
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   # OR npm start
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Build for Production
+
+To create a production-ready build, simply run `npm run build`. This generates an optimized build folder (`dist/` or `build/`) that can be easily deployed to platforms like Vercel, Netlify, or AWS.
