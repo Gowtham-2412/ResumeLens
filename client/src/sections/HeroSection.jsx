@@ -36,7 +36,7 @@ const HeroSection = () => {
           </div>
 
           <h1 className='mt-5 text-4xl font-extrabold leading-[1.05] text-[#0f172a] sm:text-5xl lg:text-6xl'>
-            A sharper SaaS workflow for resume matching.
+            Analayze your resume in seconds
           </h1>
 
           <p className='section-copy mt-5 max-w-2xl text-base sm:text-lg'>
@@ -75,7 +75,6 @@ const HeroSection = () => {
           <div className='flex items-center justify-between border-b border-white/10 pb-4'>
             <div>
               <p className='text-xs font-bold uppercase tracking-[0.18em] text-teal-200'>ResumeLens Live Review</p>
-              <h2 className='mt-2 text-2xl font-bold'>Product-grade ATS dashboard</h2>
             </div>
             <span className='inline-flex items-center gap-2 rounded-md border border-teal-300/20 bg-teal-300/10 px-3 py-2 text-xs font-bold text-teal-100'>
               <BadgeCheck size={14} />
