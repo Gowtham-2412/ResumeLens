@@ -1,24 +1,22 @@
 import { PDFParse } from 'pdf-parse'
 import mammoth from 'mammoth'
-import fs from 'fs'
 import path from 'path'
 
-const parseResume = async (filePath) => {
+const parseResume = async (fileBuffer, originalName) => {
     try {
         
-        const ext = path.extname(filePath).toLowerCase();
+        const ext = path.extname(originalName).toLowerCase();
 
         let extractedText = ""
 
         if(ext === '.pdf') {
-            const dataBuffer = fs.readFileSync(filePath)
-            const parser = new PDFParse({ data: dataBuffer })
+            const parser = new PDFParse({ data: fileBuffer })
             const pdfData = await parser.getText()
             await parser.destroy()
 
             extractedText = pdfData.text;
         } else if(ext === '.docx'){
-            const docData = await mammoth.extractRawText({path: filePath})
+            const docData = await mammoth.extractRawText({ buffer: fileBuffer })
 
             extractedText = docData.value;
         } else {

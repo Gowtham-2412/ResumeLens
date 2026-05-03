@@ -1,10 +1,8 @@
-import fs from 'fs'
 import ResumeAnalysis from "../models/analysisModel.js";
 import { resumeAnalyze } from "../services/resumeAnalyzer.js";
 import parseResume from "../services/resumeParser.js";
 
 const uploadResume = async (req, res) => {
-    let filePath = null
     try {
 
         const { jobDescription } = req.body;
@@ -16,24 +14,19 @@ const uploadResume = async (req, res) => {
             return res.status(400).json({ message: "Job description required" });
         }
 
-        filePath = req.file.path;
-        const resumeText = await parseResume(filePath)
+        const resumeText = await parseResume(req.file.buffer, req.file.originalname)
 
 
         const analysis = resumeAnalyze(resumeText, jobDescription)
 
         const saveAnalysis = await ResumeAnalysis.create({
             userId: req.user.id,
-            resumeFile: req.file.filename,
+            resumeFile: req.file.originalname,
             jobDescription,
             matchedKeywords: analysis.matchedKeywords,
             missingKeywords: analysis.missingKeywords,
             atsScore: analysis.atsScore,
             suggestions: analysis.suggestions
-        })
-
-        fs.unlink(filePath, (err) => {
-            if (err) console.error("File not deleted:", err)
         })
 
         res.json({
@@ -42,13 +35,6 @@ const uploadResume = async (req, res) => {
         })
 
     } catch (error) {
-
-        if (filePath && fs.existsSync(filePath)) {
-            fs.unlink(filePath, (err) => {
-                if (err) console.error("File deletion failed:", err);
-            });
-        }
-
         res.status(500).json({ message: "ATS analysis failed", error: error.message });
     }
 }
