@@ -452,6 +452,90 @@ const AnalysisPage = () => {
                     </div>
                   </div>
                 )}
+
+                {activeTab === 'Matched vs Missing' && (
+                  <div className='p-6 sm:p-8 grid gap-8 md:grid-cols-2'>
+                    <div className='space-y-4'>
+                      <div className='flex items-center gap-2 text-[#0f766e]'>
+                        <CheckCircle2 size={20} />
+                        <h3 className='text-lg font-bold text-[#0f172a]'>Matched Keywords</h3>
+                      </div>
+                      <div className='flex flex-wrap gap-2'>
+                        {analysis.matchedKeywords?.length > 0 ? (
+                          analysis.matchedKeywords.map((kw, i) => (
+                            <span key={i} className='inline-flex items-center rounded-md bg-[#0f766e]/10 px-2.5 py-1 text-sm font-semibold text-[#0f766e]'>
+                              {kw}
+                            </span>
+                          ))
+                        ) : (
+                          <p className='text-sm text-[#64748b]'>No matched keywords found.</p>
+                        )}
+                      </div>
+                    </div>
+                    <div className='space-y-4'>
+                      <div className='flex items-center gap-2 text-[#b7791f]'>
+                        <AlertCircle size={20} />
+                        <h3 className='text-lg font-bold text-[#0f172a]'>Missing Keywords</h3>
+                      </div>
+                      <div className='flex flex-wrap gap-2'>
+                        {analysis.missingKeywords?.length > 0 ? (
+                          analysis.missingKeywords.map((kw, i) => (
+                            <span key={i} className='inline-flex items-center rounded-md bg-[#f0b56a]/15 px-2.5 py-1 text-sm font-semibold text-[#b7791f]'>
+                              {kw}
+                            </span>
+                          ))
+                        ) : (
+                          <p className='text-sm text-[#64748b]'>No missing keywords found.</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'Suggestions' && (
+                  <div className='p-6 sm:p-8'>
+                    <h3 className='text-lg font-bold text-[#0f172a] mb-5'>Improvement Suggestions</h3>
+                    <div className='space-y-4'>
+                      {analysis.suggestions?.length > 0 ? (
+                        analysis.suggestions.map((suggestion, index) => (
+                          <div key={index} className='flex items-start gap-3 rounded-lg border border-black/5 bg-[#f8fafc] p-4'>
+                            <div className='mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0f766e]/10 text-xs font-bold text-[#0f766e]'>
+                              {index + 1}
+                            </div>
+                            <p className='text-sm leading-6 text-[#475569]'>{suggestion}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p className='text-sm text-[#64748b]'>No suggestions at this time.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'Breakdown' && (
+                  <div className='p-6 sm:p-8'>
+                    <h3 className='text-lg font-bold text-[#0f172a] mb-5'>Score Breakdown</h3>
+                    <div className='grid gap-6 sm:grid-cols-2'>
+                      {categoryScores.map((item, index) => (
+                        <div key={item.title} className='rounded-lg border border-black/5 bg-[#f8fafc] p-5'>
+                          <div className='mb-2 flex items-center justify-between'>
+                            <p className='text-sm font-bold text-[#0f172a]'>{item.title}</p>
+                            <span className={`text-lg font-extrabold bg-clip-text text-transparent bg-gradient-to-r ${scoreStyles[index % scoreStyles.length]}`}>
+                              {item.score}%
+                            </span>
+                          </div>
+                          <div className='mb-3 h-2 w-full rounded-full bg-[#e2e8f0]'>
+                            <div 
+                              className={`h-full rounded-full bg-gradient-to-r ${scoreStyles[index % scoreStyles.length]}`} 
+                              style={{ width: `${item.score}%` }} 
+                            />
+                          </div>
+                          <p className='text-xs leading-5 text-[#64748b]'>{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
           )}
