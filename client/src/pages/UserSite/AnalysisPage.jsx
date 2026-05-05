@@ -177,10 +177,10 @@ const AnalysisPage = () => {
             </div>
 
             <div className='mt-8 grid gap-6 xl:grid-cols-2'>
-              <div className='rounded-lg border border-white/10 bg-white p-5 text-[#0f172a] shadow-xl shadow-black/10'>
+              <div className='min-w-0 rounded-lg border border-white/10 bg-white p-5 text-[#0f172a] shadow-xl shadow-black/10'>
                 <label
                   htmlFor='resume-upload'
-                  className={`upload-dropzone group flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-10 text-center transition-all ${
+                  className={`upload-dropzone group flex w-full min-w-0 min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-10 text-center transition-all ${
                     selectedFile
                       ? 'border-[#0f766e]/55 bg-[#0f766e]/5'
                       : 'border-[#cbd5e1] hover:border-[#0f766e] hover:bg-[#0f766e]/5'
@@ -231,7 +231,7 @@ const AnalysisPage = () => {
                 )}
               </div>
 
-              <div className='flex flex-col rounded-lg border border-white/10 bg-white p-5 text-[#0f172a] shadow-xl shadow-black/10'>
+              <div className='min-w-0 flex flex-col rounded-lg border border-white/10 bg-white p-5 text-[#0f172a] shadow-xl shadow-black/10'>
                 <div className='flex items-start gap-3 mb-4'>
                   <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0f172a]/5 text-[#0f172a]'>
                     <Target size={18} />
@@ -244,7 +244,7 @@ const AnalysisPage = () => {
                     <button
                       type='button'
                       onClick={handleUseSampleRole}
-                      className='rounded-lg border border-black/10 bg-[#f8fafc] px-3 py-2 text-xs font-semibold text-[#0f172a] shadow-sm hover:-translate-y-0.5 hover:border-[#0f766e]/35'
+                      className='shrink-0 whitespace-nowrap rounded-lg border border-black/10 bg-[#f8fafc] px-3 py-2 text-xs font-semibold text-[#0f172a] shadow-sm hover:-translate-y-0.5 hover:border-[#0f766e]/35'
                     >
                       Use sample
                     </button>
@@ -255,7 +255,7 @@ const AnalysisPage = () => {
                   value={jobDescription}
                   onChange={(event) => setJobDescription(event.target.value)}
                   placeholder='Paste the job title, responsibilities, required skills, and qualifications here...'
-                  className='app-textarea flex-1 text-sm bg-white border-black/10 focus:border-[#0f766e] focus:ring-1 focus:ring-[#0f766e] shadow-sm'
+                  className='app-textarea flex-1 w-full min-w-0 text-sm bg-white border-black/10 focus:border-[#0f766e] focus:ring-1 focus:ring-[#0f766e] shadow-sm'
                   style={{ minHeight: '220px' }}
                 />
 
@@ -374,7 +374,7 @@ const AnalysisPage = () => {
               <div className='mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
                 <h2 className='text-2xl font-bold text-[#0f172a]'>ATS Analysis Results</h2>
                 
-                <div className='flex overflow-x-auto hide-scrollbar bg-white rounded-xl p-1 shadow-sm border border-black/5'>
+                <div className='flex overflow-x-auto max-w-full hide-scrollbar bg-white rounded-xl p-1 shadow-sm border border-black/5'>
                   {tabs.map((tab) => (
                     <button
                       key={tab}
@@ -448,182 +448,13 @@ const AnalysisPage = () => {
                 {activeTab === 'ATS Score' && (
                   <div className='grid gap-8 lg:grid-cols-[0.8fr_1.2fr] p-6 sm:p-8'>
                     <div className='flex flex-col items-center justify-center bg-[#f8f9fa] rounded-[20px] p-8 border border-black/5'>
-                      <h3 className='text-lg font-bold text-[#0f172a] mb-6'>Overall Compatibility</h3>
-                      <div className='relative flex items-center justify-center w-48 h-48'>
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="45"
-                            fill="transparent"
-                            stroke="#f0f2f5"
-                            strokeWidth="8"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="45"
-                            fill="transparent"
-                            stroke="#0f766e"
-                            strokeWidth="8"
-                            strokeDasharray={`${(overallScore ?? 0) * 2.83} 283`}
-                            className="transition-all duration-1000 ease-out"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute flex flex-col items-center justify-center text-center">
-                          <span className="text-5xl font-bold text-[#0f172a]">{overallScore ?? 0}</span>
-                          <span className="text-xs font-semibold uppercase tracking-widest text-[#475569] mt-1">/ 100</span>
-                        </div>
-                      </div>
-                      <p className='mt-6 text-sm text-center text-[#475569] max-w-[200px]'>
-                        This score reflects how well your resume matches the job description criteria.
-                      </p>
-                    </div>
-
-                    <div>
-                      <div className='mb-6'>
-                        <h3 className='text-xl font-bold text-[#0f172a]'>Skills Match Visualization</h3>
-                        <p className='text-sm text-[#475569] mt-1'>Section-by-section breakdown of your resume's performance.</p>
-                      </div>
-
-                      <div className='space-y-6'>
-                        {categoryScores.map((item, index) => (
-                          <div key={item.title} className='group'>
-                            <div className='mb-2 flex items-center justify-between gap-3'>
-                              <p className='text-sm font-bold text-[#0f172a]'>{item.title}</p>
-                              <span className='text-sm font-bold text-[#0f766e] bg-[#0f766e]/10 px-2 py-0.5 rounded-md'>{item.score}%</span>
-                            </div>
-                            <div className='h-2.5 overflow-hidden rounded-full bg-[#f0f2f5] shadow-inner'>
-                              <div
-                                className={`h-full rounded-full bg-gradient-to-r ${scoreStyles[index % scoreStyles.length]} transition-all duration-1000 ease-out`}
-                                style={{ width: `${item.score}%` }}
-                              />
-                            </div>
-                            <p className='mt-2 text-xs text-[#475569]'>{item.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'Matched vs Missing' && (
-                  <div className='p-6 sm:p-8'>
-                    <div className='mb-6'>
-                      <h3 className='text-xl font-bold text-[#0f172a]'>Matched vs Missing Keywords</h3>
-                      <p className='text-sm text-[#475569] mt-1'>Keywords are critical for passing ATS filters. Ensure you include relevant industry terms.</p>
-                    </div>
-
-                    <div className='grid gap-6 md:grid-cols-2'>
-                      <div className='bg-[#f8f9fa] rounded-[20px] p-6 border border-black/5'>
-                        <div className='flex items-center gap-2 mb-4'>
-                          <CheckCircle2 size={18} className='text-[#0f766e]' />
-                          <h4 className='font-bold text-[#0f172a]'>Matched Keywords ({analysis.matchedKeywords?.length || 0})</h4>
-                        </div>
-                        <div className='flex flex-wrap gap-2'>
-                          {analysis.matchedKeywords?.length ? (
-                            analysis.matchedKeywords.map((keyword) => (
-                              <span
-                                key={keyword}
-                                className='rounded-lg border border-[#0f766e]/20 bg-white px-3 py-1.5 text-xs font-semibold text-[#3a7c7b] shadow-sm'
-                              >
-                                {keyword}
-                              </span>
-                            ))
-                          ) : (
-                            <p className='text-sm text-[#475569] italic'>No matched keywords found.</p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className='bg-[#fff9f2] rounded-[20px] p-6 border border-[#f0b56a]/20'>
-                        <div className='flex items-center gap-2 mb-4'>
-                          <AlertCircle size={18} className='text-[#d99d52]' />
-                          <h4 className='font-bold text-[#0f172a]'>Missing Keywords ({analysis.missingKeywords?.length || 0})</h4>
-                        </div>
-                        <div className='flex flex-wrap gap-2'>
-                          {analysis.missingKeywords?.length ? (
-                            analysis.missingKeywords.map((keyword) => (
-                              <span
-                                key={keyword}
-                                className='rounded-lg border border-[#f0b56a]/30 bg-white px-3 py-1.5 text-xs font-semibold text-[#d99d52] shadow-sm'
-                              >
-                                {keyword}
-                              </span>
-                            ))
-                          ) : (
-                            <p className='text-sm text-[#475569] italic'>No missing keywords found.</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'Suggestions' && (
-                  <div className='p-6 sm:p-8'>
-                    <div className='mb-6'>
-                      <h3 className='text-xl font-bold text-[#0f172a]'>Suggestions</h3>
-                      <p className='text-sm text-[#475569] mt-1'>Actionable feedback to strengthen your resume's impact and phrasing.</p>
-                    </div>
-
-                    {suggestionCards.length > 0 ? (
-                      <div className='grid gap-4'>
-                        {suggestionCards.map((item, index) => (
-                          <div
-                            key={item.title}
-                            className='bg-[#f8f9fa] rounded-[16px] p-5 border border-black/5 hover:border-[#0f766e]/30 transition-colors'
-                          >
-                            <div className='flex gap-4'>
-                              <div className='flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#0f766e]/10 text-sm font-bold text-[#0f766e]'>
-                                {index + 1}
-                              </div>
-                              <div>
-                                <h4 className='font-bold text-[#0f172a] text-sm'>{item.title}</h4>
-                                <div className='mt-2 space-y-2'>
-                                  {item.points.map((point) => (
-                                    <p key={point} className='text-sm leading-relaxed text-[#475569]'>
-                                      {point}
-                                    </p>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className='bg-[#f8f9fa] rounded-[20px] p-8 text-center border border-black/5'>
-                        <CheckCircle2 size={32} className='mx-auto text-[#0f766e] mb-3' />
-                        <h4 className='font-bold text-[#0f172a]'>Looks Good!</h4>
-                        <p className='text-sm text-[#475569] mt-1'>We didn't find any major content issues. Keep up the good work.</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeTab === 'Breakdown' && (
-                  <div className='p-6 sm:p-8 flex flex-col items-center justify-center min-h-[300px] text-center'>
-                    <div className='bg-[#f0f2f5] p-4 rounded-full mb-4'>
-                      <FileText size={32} className='text-[#475569]' />
-                    </div>
-                    <h3 className='text-xl font-bold text-[#0f172a]'>Formatting Check</h3>
-                    <p className='text-sm text-[#475569] mt-2 max-w-md'>
-                      Your resume was successfully parsed. The structure appears to be ATS-friendly. Standard formatting ensures applicant tracking systems can easily read your document.
-                    </p>
-                    <div className='mt-6 inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg text-sm font-semibold'>
-                      <CheckCircle2 size={16} /> Parsing Successful
+                      <p className='text-sm text-[#475569] font-medium'>Detailed breakdown of ATS score will be displayed here.</p>
                     </div>
                   </div>
                 )}
               </div>
             </section>
           )}
-
-          <div className='mt-8 text-center text-xs font-medium text-[#475569]'>
-            <p>&copy; 2026 ResumeLens. All rights reserved.</p>
-          </div>
         </main>
       </div>
     </div>
