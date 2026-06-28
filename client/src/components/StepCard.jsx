@@ -1,28 +1,31 @@
 import React from 'react'
 
-const StepCard = ({ icon, index, title, description, showConnector }) => {
+const StepCard = ({ icon: Icon, index, title, description, showConnector }) => {
   return (
     <div className='relative'>
-      <div className='surface-card interactive-card group relative flex min-h-[17rem] flex-col overflow-hidden rounded-[24px] p-6 text-text-primary'>
-        <div className='absolute right-0 top-0 h-28 w-28 rounded-full bg-button-background/10 blur-3xl transition duration-300 group-hover:bg-[#f0b56a]/12' />
-
-        <div className='relative flex items-center justify-between gap-4'>
-          <div className='flex h-16 w-16 items-center justify-center rounded-[20px] border border-[#0f766e]/15 bg-[#0f766e]/10 shadow-inner'>
-            <img src={icon} alt='' className='w-10' />
+      <div className='surface-card interactive-card group flex h-full flex-col p-6'>
+        <div className='flex items-center justify-between'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-signal-light text-signal transition-all group-hover:bg-signal group-hover:text-white group-hover:shadow-lg group-hover:shadow-signal/20'>
+            <Icon size={22} />
           </div>
-          <span className='text-sm font-semibold tracking-[0.24em] text-light-gray-text'>0{index}</span>
+          <span className='flex h-8 w-8 items-center justify-center rounded-full bg-canvas font-display text-sm font-bold text-graphite/50'>
+            {index}
+          </span>
         </div>
 
-        <div className='relative mt-10'>
-          <h3 className='text-2xl font-semibold'>{title}</h3>
-          <p className='mt-3 max-w-xs text-base leading-7 text-light-gray-text'>
+        <div className='mt-6'>
+          <h3 className='font-display text-xl font-bold text-ink'>{title}</h3>
+          <p className='mt-2 text-sm leading-relaxed text-graphite'>
             {description}
           </p>
         </div>
       </div>
 
       {showConnector && (
-        <div className='pointer-events-none absolute -right-8 top-1/2 hidden h-px w-8 -translate-y-1/2 bg-linear-to-r from-button-background/55 to-transparent md:block' />
+        <div className='pointer-events-none absolute -right-4 top-1/2 hidden h-px w-4 -translate-y-1/2 md:block'>
+          <div className='h-full w-full bg-rule' />
+          <div className='absolute -right-1 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-signal' />
+        </div>
       )}
     </div>
   )

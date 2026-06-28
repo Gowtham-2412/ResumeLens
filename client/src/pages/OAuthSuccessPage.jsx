@@ -12,9 +12,7 @@ const OAuthSuccessPage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (hasProcessedRef.current) {
-      return
-    }
+    if (hasProcessedRef.current) return
 
     hasProcessedRef.current = true
     const token = searchParams.get('token')
@@ -38,30 +36,30 @@ const OAuthSuccessPage = () => {
 
   return (
     <div className='page-shell flex min-h-screen items-center justify-center py-10'>
-      <div className='surface-card w-full max-w-lg rounded-[32px] p-8 text-center sm:p-10'>
+      <div className='surface-card w-full max-w-md p-8 text-center'>
         {error ? (
           <>
-            <div className='mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 text-red-300'>
-              <AlertCircle size={24} />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-danger-light text-danger'>
+              <AlertCircle size={22} />
             </div>
-            <h1 className='mt-5 text-3xl font-semibold'>Google sign-in failed</h1>
-            <p className='mt-3 text-sm leading-7 text-light-gray-text'>{error}</p>
+            <h1 className='mt-4 font-display text-2xl font-bold text-ink'>Sign-in failed</h1>
+            <p className='mt-2 text-sm text-graphite'>{error}</p>
             <button
               type='button'
               onClick={() => navigate('/login')}
-              className='btn-secondary mt-6'
+              className='btn-secondary mt-5'
             >
               Back to login
             </button>
           </>
         ) : (
           <>
-            <div className='mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-button-background/10 text-button-background'>
-              <LoaderCircle className='animate-spin' size={24} />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-signal-light text-signal'>
+              <LoaderCircle className='animate-spin' size={22} />
             </div>
-            <h1 className='mt-5 text-3xl font-semibold'>Signing you in</h1>
-            <p className='mt-3 text-sm leading-7 text-light-gray-text'>
-              We are finishing your Google authentication and redirecting you into ResumeLens.
+            <h1 className='mt-4 font-display text-2xl font-bold text-ink'>Signing you in</h1>
+            <p className='mt-2 text-sm text-graphite'>
+              Finishing your Google authentication...
             </p>
           </>
         )}

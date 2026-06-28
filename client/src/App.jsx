@@ -10,7 +10,7 @@ import OAuthSuccessPage from './pages/OAuthSuccessPage'
 
 const App = () => {
   return (
-    <div className='min-h-screen bg-app-background text-text-primary'>
+    <div className='min-h-screen bg-paper text-ink'>
       <Routes>
         <Route path='/' element={<LandingPage/>} />
         <Route path='/login' element={<LoginPage/>} />

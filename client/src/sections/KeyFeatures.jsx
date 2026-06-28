@@ -1,64 +1,70 @@
 import React from 'react'
 import KeyFeatureCard from '../components/KeyFeatureCard'
 import { Archive, FileSearch, Lightbulb, Radar, Target, WandSparkles } from 'lucide-react'
+import { useInView } from '../hooks/useInView'
 
 const features = [
   {
     title: 'Job Description Comparison',
-    description:
-      'Compare your resume with the exact role description you are targeting.',
+    description: 'Side-by-side comparison of your resume against the exact role you are targeting.',
     icon: FileSearch,
+    highlight: true,
   },
   {
     title: 'Keyword Matching',
-    description:
-      'See which important technical terms already appear in your resume.',
+    description: 'Instantly see which critical technical terms already appear in your resume.',
     icon: Radar,
   },
   {
     title: 'Missing Skills Detection',
-    description:
-      'Spot skills and tools from the role that your resume does not mention yet.',
+    description: 'Spot every skill and tool from the role that your resume does not mention yet.',
     icon: Target,
   },
   {
     title: 'ATS Score Analysis',
-    description:
-      'Get a simple ATS-style score that makes each revision measurable.',
+    description: 'Get a clear ATS compatibility score so each revision is measurable and trackable.',
     icon: WandSparkles,
+    highlight: true,
   },
   {
-    title: 'Actionable Resume Suggestions',
-    description:
-      'Turn missing keywords and weak phrasing into practical next edits.',
+    title: 'Actionable Suggestions',
+    description: 'Turn missing keywords and weak phrasing into practical, ready-to-apply edits.',
     icon: Lightbulb,
   },
   {
-    title: 'Resume Analysis History',
-    description:
-      'Reopen past analyses and track progress across different resume versions.',
+    title: 'Analysis History',
+    description: 'Reopen past analyses and track your progress across different resume versions.',
     icon: Archive,
   },
 ]
 
 const KeyFeatures = () => {
+  const [ref, inView] = useInView({ threshold: 0.1 })
+
   return (
-    <section id='keyfeatures' className='scroll-mt-28 py-10 sm:py-16'>
-      <div className='flex flex-col'>
-        <div className='max-w-3xl'>
-          <h2 className='section-title mt-5 font-semibold'>Everything the app needs, without looking like a student demo.</h2>
-        </div>
+    <section id='keyfeatures' ref={ref} className='scroll-mt-20 py-10 sm:py-14'>
+      <div className={`max-w-lg transition-all duration-600 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
+        <span className='mb-3 inline-block text-sm font-semibold uppercase tracking-widest text-signal'>Features</span>
+        <h2 className='section-title'>Everything you need to beat the ATS</h2>
+        <p className='section-copy mt-3'>
+          Powerful tools built for one purpose: helping you tailor your resume for specific roles and land more interviews.
+        </p>
       </div>
 
-      <div className='mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3'>
-        {features.map((feature, index) => (
-          <KeyFeatureCard
+      <div className='mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3'>
+        {features.map((feature, i) => (
+          <div
             key={feature.title}
-            index={index + 1}
-            title={feature.title}
-            description={feature.description}
-            icon={feature.icon}
-          />
+            className={`transition-all duration-600 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+            style={{ transitionDelay: `${200 + i * 100}ms` }}
+          >
+            <KeyFeatureCard
+              title={feature.title}
+              description={feature.description}
+              icon={feature.icon}
+              highlight={feature.highlight}
+            />
+          </div>
         ))}
       </div>
     </section>

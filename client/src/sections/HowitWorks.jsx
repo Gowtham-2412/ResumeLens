@@ -1,47 +1,68 @@
 import React from 'react'
 import StepCard from '../components/StepCard'
-import upload from '../assets/cloudUpload.svg'
-import analyze from '../assets/analyze.svg'
-import improve from '../assets/improve.svg'
+import { ArrowRight, FileUp, ScanSearch, TrendingUp } from 'lucide-react'
+import { useInView } from '../hooks/useInView'
+import { useNavigate } from 'react-router-dom'
 
 const steps = [
   {
     title: 'Upload',
-    description: 'Upload your resume as a PDF or DOCX file',
-    icon: upload,
+    description: 'Drop your resume as a PDF or DOCX. We extract every detail automatically.',
+    icon: FileUp,
   },
   {
-    title: 'Run ATS Analysis',
-    description: 'Our engine parses, scores, and compares with target roles',
-    icon: analyze,
+    title: 'Analyze',
+    description: 'Our engine parses, scores, and compares your resume against the target role in seconds.',
+    icon: ScanSearch,
   },
   {
     title: 'Improve',
-    description: 'Follow actionable suggestions to boost your match score',
-    icon: improve,
+    description: 'Follow clear, actionable suggestions to close gaps and boost your ATS score.',
+    icon: TrendingUp,
   },
 ]
 
 const HowitWorks = () => {
+  const [ref, inView] = useInView({ threshold: 0.1 })
+  const navigate = useNavigate()
+
   return (
-    <section id='howitworks' className='scroll-mt-28 py-10 sm:py-14'>
-      <div className='flex flex-col'>
-        <div className='max-w-4xl'>
-          <h2 className='section-title mt-5 font-semibold'>A clear, three-step experience that feels like a product.</h2>
-        </div>
+    <section id='howitworks' ref={ref} className='scroll-mt-20 py-10 sm:py-14'>
+      <div className={`max-w-lg transition-all duration-600 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
+        <span className='mb-3 inline-block text-sm font-semibold uppercase tracking-widest text-signal'>How it works</span>
+        <h2 className='section-title'>Three steps to a stronger resume</h2>
+        <p className='section-copy mt-3'>
+          A simple workflow that turns any resume into a targeted, ATS-ready document.
+        </p>
       </div>
 
-      <div className='mt-10 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6'>
+      <div className='mt-8 grid gap-4 md:grid-cols-3 md:gap-5'>
         {steps.map((step, index) => (
-          <StepCard
+          <div
             key={step.title}
-            index={index + 1}
-            title={step.title}
-            description={step.description}
-            icon={step.icon}
-            showConnector={index < steps.length - 1}
-          />
+            className={`transition-all duration-600 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}
+            style={{ transitionDelay: `${200 + index * 150}ms` }}
+          >
+            <StepCard
+              index={index + 1}
+              title={step.title}
+              description={step.description}
+              icon={step.icon}
+              showConnector={index < steps.length - 1}
+            />
+          </div>
         ))}
+      </div>
+
+      <div className={`mt-8 flex justify-center transition-all duration-600 delay-700 ${inView ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+        <button
+          type='button'
+          onClick={() => navigate('/login')}
+          className='btn-primary group px-6 py-3 text-base'
+        >
+          Try it now — it's free
+          <ArrowRight size={18} className='transition-transform group-hover:translate-x-0.5' />
+        </button>
       </div>
     </section>
   )

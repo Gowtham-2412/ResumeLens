@@ -1,13 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import {
-  ArrowUpRight,
+  ArrowRight,
   FileSearch,
   History,
   LayoutDashboard,
   LogOut,
   Menu,
-  Sparkles,
-  User2,
   X
 } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -19,27 +17,21 @@ const Navbar = () => {
   const location = useLocation()
   const { user, isAuthenticated, logout } = useAuth()
 
-  const toggleMenu = () => {
-    setIsMenuOpen((current) => !current)
-  }
-
-  const closeMenu = () => {
-    setIsMenuOpen(false)
-  }
+  const closeMenu = () => setIsMenuOpen(false)
 
   const userLabel = user?.username || user?.name || user?.email?.split('@')[0] || 'Member'
 
-  const marketingLinks = useMemo(() => ([
+  const marketingLinks = [
     { label: 'Features', section: 'keyfeatures' },
     { label: 'Workflow', section: 'howitworks' },
     { label: 'About', section: 'footer-cta' }
-  ]), [])
+  ]
 
-  const productLinks = useMemo(() => ([
+  const productLinks = [
     { label: 'Dashboard', to: user ? `/${user.id}` : '/', icon: LayoutDashboard },
     { label: 'Analyze', to: '/analyze', icon: FileSearch },
     { label: 'History', to: '/history', icon: History }
-  ]), [user])
+  ]
 
   const handleLogoClick = () => {
     closeMenu()
@@ -48,12 +40,10 @@ const Navbar = () => {
 
   const handleMarketingClick = (sectionId) => {
     closeMenu()
-
     if (location.pathname === '/') {
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       return
     }
-
     window.location.href = `/#${sectionId}`
   }
 
@@ -68,36 +58,33 @@ const Navbar = () => {
     navigate(path)
   }
 
+  const links = isAuthenticated ? productLinks : marketingLinks
+
   return (
-    <nav className='sticky top-0 z-30 py-4 text-text-primary backdrop-blur'>
-      <div className='surface-card flex items-center justify-between gap-4 border-black/10 px-4 py-3 sm:px-5'>
+    <nav className='sticky top-0 z-30 py-3'>
+      <div className='flex items-center justify-between rounded-xl border border-rule bg-paper/90 px-4 py-2.5 shadow-sm backdrop-blur-md sm:px-5'>
         <button
           type='button'
           onClick={handleLogoClick}
-          className='flex items-center gap-3 px-1 py-1 text-left'
+          className='flex items-center gap-2 py-1'
         >
-          <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[#0f172a] text-white shadow-sm'>
-            <Sparkles size={20} strokeWidth={2.5} />
-          </div>
-          <div className='cursor-pointer'>
-            <p
-              className='text-lg font-bold tracking-tight sm:text-xl text-black/90'
-            >
-              ResumeLens
-            </p>
-            <p className='text-[11px] font-semibold uppercase tracking-[0.16em] text-[#64748b]'>ATS Workspace</p>
-          </div>
+          <span className='font-display text-lg font-extrabold tracking-tight text-ink sm:text-xl'>
+            ResumeLens
+          </span>
+          <span className='rounded bg-signal-light px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-signal'>
+            ATS
+          </span>
         </button>
 
-        <div className='hidden items-center gap-1 rounded-lg border border-black/10 bg-[#f1f5f9] p-1 md:flex'>
-          {(isAuthenticated ? productLinks : marketingLinks).map((item) => {
+        <div className='hidden items-center gap-1 md:flex'>
+          {links.map((item) => {
             if ('section' in item) {
               return (
                 <button
                   key={item.label}
                   type='button'
                   onClick={() => handleMarketingClick(item.section)}
-                  className='rounded-md px-4 py-2 text-sm font-semibold text-text-primary/70 hover:bg-white hover:text-text-primary hover:shadow-sm transition-colors'
+                  className='btn-ghost text-sm'
                 >
                   {item.label}
                 </button>
@@ -105,19 +92,18 @@ const Navbar = () => {
             }
 
             const Icon = item.icon
+            const isActive = location.pathname === item.to
 
             return (
               <button
                 key={item.label}
                 type='button'
                 onClick={() => handleNavigate(item.to)}
-                className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-colors ${
-                  location.pathname === item.to
-                    ? 'bg-white text-text-primary shadow-sm'
-                    : 'text-text-primary/70 hover:bg-white hover:text-text-primary hover:shadow-sm'
+                className={`btn-ghost inline-flex items-center gap-1.5 text-sm ${
+                  isActive ? 'bg-canvas text-ink font-semibold' : ''
                 }`}
               >
-                <Icon size={16} strokeWidth={location.pathname === item.to ? 2.5 : 2} />
+                <Icon size={15} strokeWidth={isActive ? 2.5 : 2} />
                 {item.label}
               </button>
             )
@@ -126,42 +112,20 @@ const Navbar = () => {
 
         {isAuthenticated && user ? (
           <div className='hidden items-center gap-3 md:flex'>
-            <div className='rounded-lg border border-black/10 bg-[#f8fafc] px-3 py-2'>
-              <div className='flex items-center gap-3'>
-                <div className='flex h-9 w-9 items-center justify-center rounded-md bg-button-background/10 text-button-background'>
-                  <User2 size={16} strokeWidth={2.5} />
-                </div>
-                <div className='text-left'>
-                  <p className='text-sm font-semibold leading-none text-[#0f172a]'>{userLabel}</p>
-                  <p className='mt-1 text-xs text-[#475569]'>Signed in</p>
-                </div>
-              </div>
-            </div>
-            <button
-              type='button'
-              onClick={handleLogout}
-              className='btn-secondary px-4 py-3 text-sm'
-            >
-              <LogOut size={16} />
+            <span className='text-sm font-medium text-graphite'>{userLabel}</span>
+            <button type='button' onClick={handleLogout} className='btn-ghost text-sm text-graphite'>
+              <LogOut size={15} />
               Sign out
             </button>
           </div>
         ) : (
-          <div className='hidden items-center gap-3 md:flex'>
-            <button
-              type='button'
-              onClick={() => navigate('/login')}
-              className='btn-secondary px-4 py-3 text-sm'
-            >
+          <div className='hidden items-center gap-2 md:flex'>
+            <button type='button' onClick={() => navigate('/login')} className='btn-ghost text-sm'>
               Log in
             </button>
-            <button
-              type='button'
-              onClick={() => navigate('/login')}
-              className='btn-primary px-4 py-3 text-sm'
-            >
-              Start free
-              <ArrowUpRight size={16} />
+            <button type='button' onClick={() => navigate('/login')} className='btn-primary text-sm'>
+              Get started
+              <ArrowRight size={15} />
             </button>
           </div>
         )}
@@ -170,70 +134,69 @@ const Navbar = () => {
           type='button'
           aria-expanded={isMenuOpen}
           aria-label='Toggle navigation menu'
-          className='rounded-lg border border-black/10 bg-black/[0.02] p-2 md:hidden text-[#0f172a]'
-          onClick={toggleMenu}
+          className='rounded-lg border border-rule p-2 text-ink md:hidden'
+          onClick={() => setIsMenuOpen((v) => !v)}
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {isMenuOpen && (
-        <div className='surface-card mt-3 p-4 md:hidden shadow-xl'>
-          <div className='flex flex-col gap-2'>
-            {(isAuthenticated ? productLinks : marketingLinks).map((item) => {
+        <div className='mt-2 rounded-xl border border-rule bg-paper p-3 shadow-lg md:hidden'>
+          <div className='flex flex-col gap-1'>
+            {links.map((item) => {
               if ('section' in item) {
                 return (
                   <button
                     key={item.label}
                     type='button'
                     onClick={() => handleMarketingClick(item.section)}
-                    className='flex items-center justify-between rounded-lg border border-black/5 bg-black/[0.02] px-4 py-3 text-left text-sm font-medium text-text-primary'
+                    className='rounded-lg px-3 py-2.5 text-left text-sm font-medium text-ink hover:bg-canvas'
                   >
-                    <span>{item.label}</span>
-                    <ArrowUpRight size={16} className='text-[#475569]' />
+                    {item.label}
                   </button>
                 )
               }
 
               const Icon = item.icon
+              const isActive = location.pathname === item.to
 
               return (
                 <button
                   key={item.label}
                   type='button'
                   onClick={() => handleNavigate(item.to)}
-                  className='flex items-center justify-between rounded-lg border border-black/5 bg-black/[0.02] px-4 py-3 text-left text-sm font-medium text-text-primary'
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
+                    isActive ? 'bg-canvas text-ink' : 'text-graphite hover:bg-canvas hover:text-ink'
+                  }`}
                 >
-                  <span className='inline-flex items-center gap-2'>
-                    <Icon size={16} className='text-[#0f766e]' />
-                    {item.label}
-                  </span>
-                  <ArrowUpRight size={16} className='text-[#475569]' />
+                  <Icon size={16} />
+                  {item.label}
                 </button>
               )
             })}
           </div>
 
-          <div className='mt-4 border-t border-black/10 pt-4'>
+          <div className='mt-2 border-t border-rule pt-2'>
             {isAuthenticated && user ? (
-              <div className='space-y-3'>
-                <div className='rounded-lg border border-black/5 bg-black/[0.02] px-4 py-3'>
-                  <p className='text-sm font-semibold text-[#0f172a]'>{userLabel}</p>
-                  <p className='mt-1 text-xs text-[#475569]'>Signed in to ResumeLens</p>
+              <div className='space-y-1'>
+                <div className='px-3 py-2'>
+                  <p className='text-sm font-medium text-ink'>{userLabel}</p>
+                  <p className='text-xs text-graphite'>Signed in</p>
                 </div>
-                <button type='button' onClick={handleLogout} className='btn-secondary w-full justify-center'>
-                  <LogOut size={16} />
+                <button type='button' onClick={handleLogout} className='btn-ghost w-full justify-start text-sm'>
+                  <LogOut size={15} />
                   Sign out
                 </button>
               </div>
             ) : (
-              <div className='grid gap-3'>
-                <button type='button' onClick={() => handleNavigate('/login')} className='btn-secondary w-full justify-center'>
+              <div className='grid gap-2 pt-1'>
+                <button type='button' onClick={() => handleNavigate('/login')} className='btn-secondary w-full justify-center text-sm'>
                   Log in
                 </button>
-                <button type='button' onClick={() => handleNavigate('/login')} className='btn-primary w-full justify-center'>
-                  Start free
-                  <ArrowUpRight size={16} />
+                <button type='button' onClick={() => handleNavigate('/login')} className='btn-primary w-full justify-center text-sm'>
+                  Get started
+                  <ArrowRight size={15} />
                 </button>
               </div>
             )}
